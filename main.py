@@ -10,42 +10,37 @@ df['Size_num'] = df['Size'].map({
     'S': 1,
     'M': 2,
     'L': 3,
-    'XL': 4
+    'XL': 4,
+    'XXL': 5
 })
 
-# Define features and target variable
-x = df[['Chest_min', 'Chest_max', 'Length_min', 'Length_max', 'Sleeve_length_min', 'Sleeve_length_max', 'Sleeve_open_min', 'Sleeve_open_max']]
+df['Chest_weighted'] = df['Chest'] * 2.0
+df['Shoulder_weighted'] = df['Shoulder'] * 2.0  
+
+x = df[['Chest_weighted', 'Shoulder_weighted', 'Front_Length', 'Sleeve_length']]
 y = df['Size_num']
 
-# Split data into train and test sets
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
 model = RandomForestClassifier()
 model.fit(x_train, y_train)
 
-# Evaluate the model
-accuracy = model.score(x_test, y_test)
-print(f"Model Accuracy: {accuracy}")
-
-# Save the trained model
 with open('model.pkl', 'wb') as file:
     pickle.dump(model, file)
 
-# Input user's measurements
-user_chest_size = int(input("Enter chest size: "))
-user_length = int(input("Enter length: "))
-user_sleeve_length = int(input("Enter sleeve length: "))
-user_sleeve_open = int(input("Enter sleeve open: "))
+user_chest = float(input("Enter chest size: "))
+user_shoulder = float(input("Enter shoulder size: "))
+user_front_length = float(input("Enter front length: "))
+user_sleeve_length = float(input("Enter sleeve length: "))
+
+user_chest_weighted = user_chest * 2.0
+user_shoulder_weighted = user_shoulder * 2.0
 
 user_input = pd.DataFrame([{
-    'Chest_min': user_chest_size,
-    'Chest_max': user_chest_size, 
-    'Length_min': user_length,
-    'Length_max': user_length,
-    'Sleeve_length_min': user_sleeve_length,
-    'Sleeve_length_max': user_sleeve_length,
-    'Sleeve_open_min': user_sleeve_open,
-    'Sleeve_open_max': user_sleeve_open
+    'Chest_weighted': user_chest_weighted,
+    'Shoulder_weighted': user_shoulder_weighted,
+    'Front_Length': user_front_length,
+    'Sleeve_length': user_sleeve_length
 }])
 
 predicted_size_num = model.predict(user_input)[0]
