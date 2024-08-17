@@ -13,7 +13,7 @@ Predicts the size(XS/S/M/L/XL/XXL) of a POLO T-Shirt, given the body measurement
   - [Questions](#questions)
 
 ## Installation
-```pip install -r requirements.txt```
+~~~pip install -r requirements.txt~~~
 
 ## Usage
 ```uvicorn app:app --reload```
