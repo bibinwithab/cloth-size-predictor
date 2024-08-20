@@ -23,6 +23,10 @@ class UserMeasurements(BaseModel):
     front_length: float
     sleeve_length: float
 
+@app.get('/')
+async def root():
+    return {"message": "API up and running"}
+
 @app.post('/predict')
 async def predict_size(user: UserMeasurements):
     chest_weighted = user.chest * 1.5
