@@ -29,7 +29,7 @@ async def root():
 
 @app.post('/predict')
 async def predict_size(user: UserMeasurements):
-    chest_weighted = user.chest * 1.5
+    chest_weighted = user.chest * 2.0
     shoulder_weighted = user.shoulder * 2.0
 
     user_input = pd.DataFrame([{
